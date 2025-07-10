@@ -11,6 +11,7 @@ namespace TextRpg001
             Story story = new Story(); // 스토리 클래스 인스턴스 생성
 
             string Name = story.StartStory(); // 스토리 시작 및 이름 입력
+            Player player = new Player(Name); // 플레이어 클래스 인스턴스 생성
 
             while (true)
             {
@@ -25,7 +26,6 @@ namespace TextRpg001
                 {
                     case "1":
                         Console.WriteLine("상태 보기");
-                        Player player = new Player(Name);
                         player.DisplayStatus();
                         break;
                     case "2":
@@ -35,7 +35,7 @@ namespace TextRpg001
                         break;
                     case "3":
                         Console.WriteLine("상점");
-                        Shop shop = new Shop();
+                        Shop shop = new Shop(player);
                         shop.DisplayShop();
                         break;
                     default:
@@ -99,63 +99,128 @@ namespace TextRpg001
 
     internal class Shop // 상점 클래스
     {
-        public void DisplayShop()
+        private Player player; // 플레이어 인스턴스
+
+        public Shop(Player player)
         {
-            Console.WriteLine("상점에 오신 것을 환영합니다!");
-            Console.WriteLine("[필요한 아이템을 얻을 수 있는 상점입니다.]");
-
-
-            switch (Console.ReadLine())
-            {
-                case "1":
-                    Console.WriteLine("1. 철검 - 100 골드");
-                    break;
-                case "2":
-                    Console.WriteLine("2. 방패 - 150 골드");
-                    break;
-                case "3":
-                    Console.WriteLine("3. 귀족의 투구 - 500 골드");
-                    break;
-                case "4":
-                    Console.WriteLine("4. 나무몽둥이 - 50 골드");
-                    break;
-                case "5":
-                    Console.WriteLine("0. 나가기");
-                    break;
-                default:
-                    Console.WriteLine("던전");
-                    break;
-            }
+            this.player = player; // 생성자에서 플레이어 인스턴스를 받아옴
         }
 
+        public void DisplayShop()
+        {
+            int gold = player.PlayerGold; // 플레이어의 골드
+            string[] itemNames = { "수련자 갑옷", "무쇠갑옷", "스파르타의 갑옷", "낡은 검", "청동 도끼", "스파르타의 창" };
+            string[] itemStats = { "방어력 +5", "방어력 +9", "방어력 +15", "공격력 +2", "공격력 +5", "공격력 +7" };
+            string[] itemDescs = {
+                "수련에 도움을 주는 갑옷입니다.",
+                "무쇠로 만들어져 튼튼한 갑옷입니다.",
+                "스파르타의 전사들이 사용했다는 전설의 갑옷입니다.",
+                "쉽게 볼 수 있는 낡은 검 입니다.",
+                "어디선가 사용됐던거 같은 도끼입니다.",
+                "스파르타의 전사들이 사용했다는 전설의 창입니다."
+            };
+            int[] itemGold = { 1000, 1200, 1500, 500, 700, 1300 };
+
+            while (true)
+            {
+                Console.WriteLine("\n======================================================\n");
+                Console.WriteLine("상점");
+                Console.WriteLine("필요한 아이템을 얻을 수 있는 상점입니다.\n");
+                Console.WriteLine($"[보유 골드]\n{gold} G\n");
+                Console.WriteLine("[아이템 목록]\n");
+                for (int i = 0; i < itemNames.Length; i++)
+                {
+                    Console.WriteLine($"- {itemNames[i],-10}\t | {itemStats[i],-8}\t | {itemDescs[i], -8}\t | {itemGold[i]}");
+                }
+                Console.WriteLine();
+                Console.WriteLine("[1. 아이템 구매]");
+                Console.WriteLine("[0. 나가기]");
+
+                string input = Console.ReadLine();
+                if (input == "0")
+                {
+                    Console.WriteLine("상점에서 나갑니다.");
+                    break;
+                }
+                else if (input == "1")
+                {
+                    // 구매 모드 진입
+                    while (true)
+                    {
+                        Console.WriteLine("\n======================================================\n");
+                        Console.WriteLine("[아이템 목록]\n");
+
+                        for (int i = 0; i < itemNames.Length; i++)
+                        {
+                            Console.WriteLine($"- {i + 1}. {itemNames[i],-10}\t | {itemStats[i],-8}\t | {itemDescs[i],-8}\t | {itemGold[i]}");
+                        }
+                        Console.WriteLine("\n[0. 취소]");
+
+                        string buyInput = Console.ReadLine();
+                        if (buyInput == "0")
+                        {
+                            Console.WriteLine("구매를 취소합니다.\n");
+                            break;
+                        }
+                        else if (int.TryParse(buyInput, out int itemNum) && itemNum >= 1 && itemNum <= itemNames.Length)
+                        {
+                            Console.WriteLine($"{itemNames[itemNum - 1]}을(를) 구매했습니다!\n");
+                            // 실제 구매 로직(골드 차감, 인벤토리 추가 등) 구현 필요
+                        }
+                        else
+                        {
+                            Console.WriteLine("잘못된 입력입니다.\n");
+                        }
+                        Console.WriteLine("\n구매할 아이템의 번호를 입력하세요.");
+
+
+                    }
+
+                }
+                else
+                {
+                    Console.WriteLine("잘못된 입력입니다.\n");
+                }
+            }
+        }
     }
 
 
     internal class Inventory // 인벤토리 클래스
     {
+        private List<string> items = new List<string>();
+
+        public void AddItem(string itemName)
+        {
+            items.Add(itemName);
+        }
 
         public void DisplayItems()
         {
-            
-            while(true)
+            Console.WriteLine("[아이템 목록]\n");
+            if (items.Count == 0)
             {
-                Console.WriteLine("[아이템 목록]\n");
-                // 배열로 만들기
-                // 처음 시작시 아이템 없음, 장착시 [E]표시
-                // 상점에서 구입시 여기로 이동
+                Console.WriteLine("인벤토리에 아이템이 없습니다.\n");
+            }
+            else
+            {
+                for (int i = 0; i < items.Count; i++)
+                {
+                    Console.WriteLine($"- {items[i]}");
+                }
+            }
 
-
-
-
-
+            while (true)
+            {
                 Console.WriteLine("[1. 아이템 장착]");
                 Console.WriteLine("[0. 나가기]\n");
-                if (Console.ReadLine() == "0")
+                string input = Console.ReadLine();
+                if (input == "0")
                 {
                     Console.WriteLine("인벤토리에서 나갑니다.");
                     break;
                 }
-                else if (Console.ReadLine() == "1")
+                else if (input == "1")
                 {
                     Console.WriteLine("아이템을 장착합니다.");
                     // 아이템 장착 로직 추가
@@ -165,7 +230,6 @@ namespace TextRpg001
                     Console.WriteLine("잘못된 입력입니다");
                 }
             }
-
         }
     }
 
