@@ -50,26 +50,34 @@ namespace TextRpg001
     {
         public string PlayerName { get; set; }
         public int PlayerLevel { get; set; }
+        public string PlayerJob { get; set; }
+        public int PlayerAttack { get; set; }
+        public int PlayerDefense { get; set; }
         public int PlayerHealth { get; set; }
-        public int PlayerMana { get; set; }
         public int PlayerGold { get; set; }
+
         public Player(string name)
         {
             PlayerName = name;
-            PlayerLevel = 1;
+            PlayerLevel = 01;
+            PlayerJob = "전사(스켈레톤)";
+            PlayerAttack = 10;
+            PlayerDefense = 5;
             PlayerHealth = 100;
-            PlayerMana = 50;
-            PlayerGold = 0;
+            PlayerGold = 1500;
         }
+
         public void DisplayStatus()
         {
             Console.WriteLine($"\n『");
             Console.WriteLine($"  이름: {PlayerName}");
             Console.WriteLine($"  레벨: {PlayerLevel}");
+            Console.WriteLine($"  직업: {PlayerJob}");
+            Console.WriteLine($"  공격력: {PlayerAttack}");
+            Console.WriteLine($"  방어력: {PlayerDefense}");
             Console.WriteLine($"  체력: {PlayerHealth}");
-            Console.WriteLine($"  마나: {PlayerMana}");
-            Console.WriteLine($"  골드: {PlayerGold}");
-            Console.WriteLine($"                    』");
+            Console.WriteLine($"  Gold: {PlayerGold}");
+            Console.WriteLine($"                           』");
 
             Console.WriteLine("\n[0. 나가기]");
             while (true)
