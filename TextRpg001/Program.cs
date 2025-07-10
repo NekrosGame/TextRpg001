@@ -85,7 +85,7 @@ namespace TextRpg001
                 string exitInput = Console.ReadLine();
                 if (exitInput == "0")
                 {
-                    Console.WriteLine("당신은 시작 구역으로 되돌아 갔다.");
+                    Console.WriteLine("당신은 시작 구역으로 되돌아 갔다.\n");
                     break; // while문을 빠져나가 메인 메뉴로 돌아감
                 }
                 else
@@ -102,7 +102,7 @@ namespace TextRpg001
         public void DisplayShop()
         {
             Console.WriteLine("상점에 오신 것을 환영합니다!");
-            Console.WriteLine("");
+            Console.WriteLine("[필요한 아이템을 얻을 수 있는 상점입니다.]");
 
 
             switch (Console.ReadLine())
@@ -132,17 +132,40 @@ namespace TextRpg001
 
 
     internal class Inventory // 인벤토리 클래스
-                             // 배열을 사용하여 특정 아이템을 저장하고, DisplayItems 메서드를 통해 인벤토리 내용을 출력합니다.
     {
 
         public void DisplayItems()
         {
-            Console.WriteLine("인벤토리에는 다음과 같은 아이템이 있습니다:");
-            Console.WriteLine("1. 체력 물약");
-            Console.WriteLine("2. 마나 물약");
-            Console.WriteLine("3. 무기");
-            Console.WriteLine("4. 방어구");
-            Console.WriteLine("5. 나가기");
+            
+            while(true)
+            {
+                Console.WriteLine("[아이템 목록]\n");
+                // 배열로 만들기
+                // 처음 시작시 아이템 없음, 장착시 [E]표시
+                // 상점에서 구입시 여기로 이동
+
+
+
+
+
+                Console.WriteLine("[1. 아이템 장착]");
+                Console.WriteLine("[0. 나가기]\n");
+                if (Console.ReadLine() == "0")
+                {
+                    Console.WriteLine("인벤토리에서 나갑니다.");
+                    break;
+                }
+                else if (Console.ReadLine() == "1")
+                {
+                    Console.WriteLine("아이템을 장착합니다.");
+                    // 아이템 장착 로직 추가
+                }
+                else
+                {
+                    Console.WriteLine("잘못된 입력입니다");
+                }
+            }
+
         }
     }
 
