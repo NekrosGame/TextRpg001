@@ -12,3 +12,4 @@ C:\NData\TextRpg001\TextRpg001\obj\Debug\net8.0\refint\TextRpg001.dll
 C:\NData\TextRpg001\TextRpg001\obj\Debug\net8.0\TextRpg001.pdb
 C:\NData\TextRpg001\TextRpg001\obj\Debug\net8.0\TextRpg001.genruntimeconfig.cache
 C:\NData\TextRpg001\TextRpg001\obj\Debug\net8.0\ref\TextRpg001.dll
+C:\NData\TextRpg001\TextRpg001\obj\Debug\net8.0\TextRpg001.sourcelink.json
